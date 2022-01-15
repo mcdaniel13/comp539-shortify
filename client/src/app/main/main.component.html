@@ -1,0 +1,47 @@
+<app-header></app-header>
+<div class="container">
+  <div class="row py-5 mt-4 align-items-center word">
+    <div class="col-6 mb-5">
+      <h3 class="subtitle">Welcome to</h3>
+      <h1 class="title">Shortify</h1>
+      <!-- <p class="slogan mb-0">hello world!</p> -->
+    </div>
+    <div class="col">
+      <div class="card border-0 shadow my-5 loginform">
+        <div class="card-body p-4 p-sm-5">
+          <form>
+            <div class="form-floating mb-3">
+              <input
+                class="form-control"
+                placeholder="Enter Long URL"
+                id="longUrl"
+                #longUrl
+              />
+              <label for="longUrl">Long URL</label>
+            </div>
+            <div class="text-center mb-3">
+              <button
+                class="btn btn-lg btn-primary fw-bold"
+                id="generateUrl"
+                (click)="generateShortUrl(longUrl.value)"
+              >
+                Make Short URL
+              </button>
+            </div>
+            <div class="form-floating mb-3">
+              <p
+                class="form-control"
+                placeholder="Enter Short URL"
+                id="shortUrl"
+                #shortUrl
+              >
+                {{ ShortenUrl }}
+              </p>
+              <label for="shortUrl">Short URL</label>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

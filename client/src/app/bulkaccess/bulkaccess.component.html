@@ -1,0 +1,55 @@
+<app-header></app-header>
+<div class="container">
+  <div class="card" style="border-radius:25px">
+    <h3 class="pt-4 pl-5" style="color: rgb(7, 3, 3); font-weight: bold;">
+      Bulk Access
+    </h3>
+    <hr />
+    <div class="row">
+      <div class="col-12 col-lg-3"></div>
+      <div class="col col-lg-3 bg-g-1 py-3 px-lg-1 text-center">
+        <div class="h-100 d-flex flex-column justify-content-between">
+          <h5 class="text-capitalize font-weight-bold">
+            Please enter long URLs below
+          </h5>
+
+          <div>
+            <textarea
+              class="form-control"
+              id="longUrl"
+              rows="7"
+              #bulkurls
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col col-lg-3 bg-g-1 py-3 px-lg-1 text-center border-left">
+        <div class="h-100 d-flex flex-column justify-content-between">
+          <h5 class="text-capitalize font-weight-bold">
+            Generated results
+          </h5>
+          <div *ngFor="let url of urlArray">
+            <input
+              type="text"
+              class="form-control"
+              value="http://35.194.4.193/{{ url.shortUrl }}"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <button
+          class="btn btn-success btn-block"
+          type="submit"
+          style="width:20%"
+          (click)="generate(bulkurls.value)"
+        >
+          <i></i>
+          <span>Generate</span>
+        </button>
+        &nbsp;
+      </div>
+    </div>
+    <br />
+  </div>
+</div>

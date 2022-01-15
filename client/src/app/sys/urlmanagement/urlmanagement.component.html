@@ -1,0 +1,171 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="editForm" (ngSubmit)="onEditSubmit()">
+      <div class="form-floating mb-3">
+        <input
+          class="form-control"
+          formControlName="shortUrl"
+          placeholder="shortUrl"
+          [ngClass]="{
+            'form-control': true,
+            'is-invalid':
+              isEditSubmitted &&
+              editForm.controls['shortUrl'].hasError('required')
+          }"
+          required
+          #shortUrl
+        />
+        <label for="shortUrl">Short Url</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          class="form-control"
+          formControlName="longUrl"
+          placeholder="longUrl"
+          [ngClass]="{
+            'form-control': true,
+            'is-invalid':
+              isEditSubmitted &&
+              editForm.controls['longUrl'].hasError('required')
+          }"
+          required
+          #longUrl
+        />
+        <label for="longUrl">Long Url</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="timeStamp"
+          placeholder="timeStamp"
+          [ngClass]="{
+            'form-control': true,
+            'is-invalid':
+              isEditSubmitted &&
+              editForm.controls['password'].hasError('required')
+          }"
+          required
+          #timeStamp
+        />
+        <label for="timeStamp">Expired Time</label>
+      </div>
+      <div class="d-grid">
+        <button class="btn btn-lg btn-primary fw-bold" id="update">
+          Update
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<app-header></app-header>
+<div class="container">
+  <div class="card">
+    <h3 class="pt-4 pl-5" style="color: gray; font-weight: bold;">
+      URL Management
+    </h3>
+    <form class="mt-5 ml-5 mr-5" name="queryForm">
+      <div class="form-group row">
+        <label
+          for="QueryRoleId"
+          class="col-sm-3 col-form-label form_label form_label_search form_label_gray text-right"
+          >Role</label
+        >
+        <div class="col-sm-6 form_input form_input_search">
+          <select id="QueryRoleId" name="QueryRoleId" class="form-control">
+            <option value="" selected th:text="#{all}">all</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label
+          for="QueryName"
+          class="col-sm-3 col-form-label form_label form_label_search form_label_gray text-right"
+          >Name</label
+        >
+        <div class="col-sm-6 form_input form_input_search">
+          <input
+            type="text"
+            id="QueryName"
+            name="QueryName"
+            class="form-control"
+            placeholder=""
+            autocomplete="off"
+          />
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-12 text-center">
+          <button class="btn btn-success btn_custom btn_blue" type="button">
+            <i class="fas fa-fw fa-search"></i>
+            <span>Search</span>
+          </button>
+          &nbsp;
+          <button class="btn btn-warning btn_custom btn_gray" type="button">
+            <i class="fas fa-fw fa-redo-alt"></i>
+            <span>Reset</span>
+          </button>
+        </div>
+      </div>
+    </form>
+    <hr />
+    <div class="m-5 mt-0">
+      <table
+        datatable
+        [dtOptions]="dtOptions"
+        [dtTrigger]="dtTrigger"
+        class="row-border hover"
+        style="width:100%"
+      >
+        <thead>
+          <tr>
+            <th width="20px">Short Url</th>
+            <th width="20px">Long Url</th>
+            <th width="20px">Expired Time</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="urls?.length != 0">
+          <tr *ngFor="let url of urls">
+            <td width="20px">{{ url.shortUrl }}</td>
+            <td width="20px">{{ url.longUrl }}</td>
+            <td width="20px">
+              {{ url.expireTime | date: "yyyy-MM-dd hh:mm:ss" }}
+            </td>
+            <td>
+              <button
+                class="btn btn-primary"
+                (click)="open(content, url.longUrl)"
+              >
+                <i class="fa fa-pen"></i> Edit
+              </button>
+              &nbsp;
+              <button class="btn btn-danger" (click)="delete(url.shortUrl)">
+                <i class="fa fa-trash"></i> delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="urls?.length == 0">
+          <tr>
+            <td colspan="3" class="no-data-available">No data!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br />
+</div>

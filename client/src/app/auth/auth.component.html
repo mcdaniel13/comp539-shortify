@@ -1,0 +1,206 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Registration</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="registerForm" (ngSubmit)="onRegistSubmit()">
+      <div class="form-floating mb-3">
+        <input
+          class="form-control"
+          formControlName="userid"
+          placeholder="userid"
+          [ngClass]="{
+            'form-control': true,
+            'is-invalid':
+              isRegisterSubmitted &&
+              registerForm.controls['userid'].hasError('required')
+          }"
+          required
+          #userid
+        />
+        <label for="userid">User ID</label>
+        <div
+          id="email-error-msg"
+          class="invalid-feedback mt-2"
+          *ngIf="
+            isRegisterSubmitted &&
+            registerForm.controls['userid'].hasError('required')
+          "
+        >
+          Please enter user ID.
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          class="form-control"
+          formControlName="name"
+          placeholder="name"
+          [ngClass]="{
+            'form-control': true,
+            'is-invalid':
+              isRegisterSubmitted &&
+              registerForm.controls['name'].hasError('required')
+          }"
+          required
+          #name
+        />
+        <label for="name">Name</label>
+        <div
+          id="email-error-msg"
+          class="invalid-feedback mt-2"
+          *ngIf="
+            isRegisterSubmitted &&
+            registerForm.controls['name'].hasError('required')
+          "
+        >
+          Please enter your name.
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="password"
+          class="form-control"
+          formControlName="password"
+          placeholder="Password"
+          [ngClass]="{
+            'form-control': true,
+            'is-invalid':
+              isRegisterSubmitted &&
+              registerForm.controls['password'].hasError('required')
+          }"
+          required
+          #password
+        />
+        <label for="password">Password</label>
+        <div
+          id="email-error-msg"
+          class="invalid-feedback mt-2"
+          *ngIf="
+            isRegisterSubmitted &&
+            registerForm.controls['password'].hasError('required')
+          "
+        >
+          Please enter your password.
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="password"
+          class="form-control"
+          formControlName="repassword"
+          placeholder="Repeat-Password"
+          [ngClass]="{
+            'form-control': true,
+            'is-invalid':
+              isRegisterSubmitted &&
+              registerForm.controls['repassword'].hasError('required')
+          }"
+          required
+          #repassword
+        />
+        <label for="password">Repeat-Password</label>
+        <div
+          id="email-error-msg"
+          class="invalid-feedback mt-2"
+          *ngIf="
+            isRegisterSubmitted &&
+            registerForm.controls['repassword'].hasError('required')
+          "
+        >
+          Please enter your repeat password.
+        </div>
+      </div>
+      <div class="d-grid">
+        <button class="btn btn-lg btn-primary fw-bold" id="signup">
+          Sign up
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<div class="container">
+  <div id="loader" *ngIf="isLoading"></div>
+  <div>
+    <h1 class="title">Shortify</h1>
+  </div>
+  <div class="card loginform">
+    <div class="card-body p-4 p-sm-5">
+      <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+        <div class="form-floating mb-3">
+          <input
+            class="form-control"
+            formControlName="userid"
+            placeholder="userid"
+            [ngClass]="{
+              'form-control': true,
+              'is-invalid':
+                isLoginSubmitted &&
+                loginForm.controls['userid'].hasError('required')
+            }"
+            required
+            #userid
+          />
+          <label for="userid">User ID</label>
+          <div
+            id="email-error-msg"
+            class="invalid-feedback mt-2"
+            *ngIf="
+              isLoginSubmitted &&
+              loginForm.controls['userid'].hasError('required')
+            "
+          >
+            Please enter User ID.
+          </div>
+        </div>
+        <div class="form-floating mb-3">
+          <input
+            type="password"
+            class="form-control"
+            formControlName="password"
+            placeholder="Password"
+            [ngClass]="{
+              'form-control': true,
+              'is-invalid':
+                isLoginSubmitted &&
+                loginForm.controls['password'].hasError('required')
+            }"
+            required
+            #password
+          />
+          <label for="password">Password</label>
+          <div
+            id="password-error-msg1"
+            class="invalid-feedback mt-2"
+            *ngIf="
+              isLoginSubmitted &&
+              loginForm.controls['password'].hasError('required')
+            "
+          >
+            Please enter password.
+          </div>
+        </div>
+        <div class="loginFail">{{ errorMessage }}</div>
+        <div class="d-grid">
+          <button class="btn btn-lg btn-primary fw-bold" id="login">
+            Log In
+          </button>
+        </div>
+      </form>
+      <hr />
+      <div class="mt-3 text-center">
+        <button class="btn btn-lg btn-success fw-bold" (click)="open(content)">
+          Create New Account
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

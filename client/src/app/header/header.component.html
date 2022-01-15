@@ -1,0 +1,429 @@
+<nav class="navbar navbar-expand-lg mt-1 mb-3  ">
+  <a class="navbar-brand title  ml-5" [routerLink]="'/'">Shortify</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    (click)="isMenuCollapsed = !isMenuCollapsed"
+  >
+    &#9776;
+  </button>
+
+  <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-4 ml-auto">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          style="color: #fff; font-weight: bolder; font-size: 20px"
+          [routerLink]="'.'"
+          (click)="drawer.toggle(); gethistory()"
+          >History</a
+        >
+      </li>
+
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          style="color: #fff; font-weight: bolder; font-size: 20px"
+          [routerLink]="'.'"
+          (click)="drawer2.toggle()"
+          >Plan</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          style="font-weight: bolder; font-size: 20px; color: #fff;"
+          [routerLink]="'.'"
+          *ngIf="userid != ''"
+          (click)="directPage('bulkaccess')"
+        >
+          Bulkaccess
+        </a>
+      </li>
+      <li class="nav-item">
+        <button
+          class="nav-link btn btn-outline-light pl-2 pr-2"
+          style="font-weight: bolder; font-size: 20px; color: #fff;"
+          [routerLink]="'.'"
+          *ngIf="userid == ''"
+          (click)="directPage('login')"
+        >
+          Login
+        </button>
+      </li>
+      <li class="nav-item">
+        <div
+          class="d-inline-block"
+          ngbDropdown
+          #myDrop="ngbDropdown"
+          *ngIf="userid != ''"
+        >
+          <a
+            class="mr-2 nav-link"
+            style="font-weight: bolder; font-size: 20px; color: #fff;"
+            id="dropdownManual"
+            ngbDropdownAnchor
+            (click)="myDrop.open()"
+            >Account
+          </a>
+          <div ngbDropdownMenu aria-labelledby="dropdownManual">
+            <button ngbDropdownItem (click)="directPage('profile')">
+              Profile
+            </button>
+            <button
+              ngbDropdownItem
+              *ngIf="isAuth"
+              (click)="directPage('urlManage')"
+            >
+              Url Management
+            </button>
+            <button
+              ngbDropdownItem
+              *ngIf="isAuth"
+              (click)="directPage('userManage')"
+            >
+              User Management
+            </button>
+            <button ngbDropdownItem (click)="logout()">Logout</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<mat-drawer-container
+  class="example-container"
+  autosize
+  style="position:unset; z-index: 0;"
+>
+  <mat-drawer
+    #drawer
+    class="example-sidenav"
+    mode="over"
+    position="end"
+    style=" padding:1.5rem"
+  >
+    <div>
+      <div
+        class=" mt-3 ml-5 mr-5 mb-3 d-flex justify-content-between flex-wrap"
+      >
+        <div class="flex-fill">
+          <h3 style="font-weight: bold;">
+            Your recent short URLs
+          </h3>
+        </div>
+        <div class="ml-4">
+          <button
+            class="btn  btn-outline-secondary mr-1"
+            (click)="drawer.toggle()"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <hr />
+      <div class="cardlist p-1" *ngFor="let url of history">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-row align-items-center">
+              <i class="fas fa-link"></i>
+              <div class="d-flex flex-column ml-4">
+                <div class="text-break font-weight-bold">
+                  {{ url.shortUrl }}
+                </div>
+                <div class="short-url-2 small flex-grow-1 text-t-lime-dark">
+                  {{ url.longUrl }}
+                </div>
+                <div class=" mt-1 d-flex justify-content-between flex-wrap">
+                  <div class="flex-fill">
+                    <small class="text-muted text-right flex-shrink-0 "
+                      >Created at {{ url.date }}</small
+                    >
+                  </div>
+                  <div style="margin-left:10rem;">
+                    <button
+                      class="btn btn-sm btn-primary mr-1"
+                      (click)="btnClick(url.longUrl)"
+                    >
+                      <i class="far fa-compass"></i> Visit URL
+                    </button>
+                    <button
+                      class="btn btn-sm btn-success"
+                      (click)="copyText(url.shortUrl)"
+                      ngbTooltip="copied"
+                      triggers="click:blur"
+                    >
+                      <i class="far fa-copy"></i> Copy
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class=" mt-3 ml-4 mr-3 mb-3 d-flex justify-content-between flex-wrap"
+      >
+        <div class="flex-fill">
+          <h5 style="font-weight: bold;">
+            No more recent URLs in your history
+          </h5>
+        </div>
+        <div class="ml-4">
+          <button
+            class="btn btn-danger mr-1"
+            (click)="clearhistory()"
+            *ngIf="history.length != 0"
+          >
+            <i class="fas fa-trash"></i> Clear history
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-drawer>
+</mat-drawer-container>
+
+<mat-drawer-container
+  class="example-container"
+  autosize
+  style="position:unset; z-index: 0;"
+>
+  <mat-drawer
+    #drawer2
+    class="example-sidenav"
+    mode="over"
+    position="end"
+    style="width:40rem; padding: 1.5rem"
+  >
+    <div class=" mt-3 ml-5 mr-5 mb-3 d-flex justify-content-between flex-wrap">
+      <div class="flex-fill">
+        <h3 style="font-weight: bold;">
+          Your plan
+        </h3>
+      </div>
+      <div class="ml-4">
+        <button
+          class="btn  btn-outline-secondary mr-1"
+          (click)="drawer2.toggle()"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+    <hr />
+    <div class="form-row pb-1">
+      <div class="col-lg-4 col-md-6 col-sm-12 mb-0 mb-md-3">
+        <div class="card d-flex flex-column h-100 mb-0 overflow-hidden">
+          <div
+            class="card-header text-center font-weight-bold text-capitalize d-none d-md-block position-relative"
+          >
+            Free
+          </div>
+          <div class="card-body p-2 p-md-3 flex-grow-1 small">
+            <div class="d-none d-md-block">
+              Free basic ad-supported shortening for individual users. Keep
+              track of your link history.
+            </div>
+          </div>
+          <div class="px-2 pb-2 d-none d-md-block">
+            <div class="px-3 pb-2 text-center">
+              <div>
+                <span class="font-weight-bold text-dark">$0.00</span>
+                <span class="small font-weight-bold text-dark">/mo</span>
+              </div>
+              <small>Signup for free</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12 mb-0 mb-md-3">
+        <div
+          class="card d-flex flex-column h-100 mb-0 overflow-hidden border-t-green"
+        >
+          <div
+            class="card-header text-center font-weight-bold text-capitalize d-none d-md-block position-relative"
+          >
+            Pro
+            <div
+              class="position-absolute bg-t-green"
+              style="top: -24px; right: -50px; background-color: cadetblue; color: white; padding: 40px 40px 6px; overflow: hidden; transform: rotate(40deg); font-size: 10px; font-weight: 800;"
+            >
+              Popular
+            </div>
+          </div>
+          <div class="card-body p-2 p-md-3 flex-grow-1 small">
+            <div class="d-none d-md-block">
+              Go Pro to take your branded links to the next level, with
+              unlimited tracked clicks, link tagging, and more.
+            </div>
+          </div>
+          <div class="px-2 pb-2 d-none d-md-block">
+            <div class="px-3 pb-2 text-center">
+              <div>
+                <span class="font-weight-bold text-dark"
+                  >Starting at $9.99</span
+                >
+                <span class="small font-weight-bold text-dark">/mo</span>
+              </div>
+              <small>( $119.88 billed Annually )</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 col-sm-12 mb-0 mb-md-3">
+        <div class="card d-flex flex-column h-100 mb-0 overflow-hidden">
+          <div
+            class="card-header text-center font-weight-bold text-capitalize d-none d-md-block position-relative"
+          >
+            Bulk 100K
+          </div>
+          <div class="card-body p-2 p-md-3 flex-grow-1 small">
+            <div class="d-none d-md-block">
+              For those that need a massive amount of shortened URLs for your
+              SMS or other campaigns.
+            </div>
+          </div>
+          <div class="px-2 pb-2 d-none d-md-block">
+            <div class="px-3 pb-2 text-center">
+              <div>
+                <span class="font-weight-bold text-dark"
+                  >Starting at $99.00</span
+                >
+                <span class="small font-weight-bold text-dark">/mo</span>
+              </div>
+              <small>( $1,188.00 billed Annually )</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="row">
+        <div class="col-12 col-lg-3"></div>
+        <div class="col col-lg-3 bg-g-1 py-3 px-lg-1 text-center">
+          <div class="h-100 d-flex flex-column justify-content-between">
+            <h5 class="text-capitalize font-weight-bold">Free</h5>
+          </div>
+        </div>
+        <div class="col col-lg-3 bg-g-1 py-3 px-lg-1 text-center border-left">
+          <div class="h-100 d-flex flex-column justify-content-between">
+            <h5 class="text-capitalize font-weight-bold">Pro</h5>
+          </div>
+        </div>
+        <div class="col col-lg-3 bg-g-1 py-3 px-lg-1 text-center border-left">
+          <div class="h-100 d-flex flex-column justify-content-between">
+            <h5 class="text-capitalize font-weight-bold">Bulk 100K</h5>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="row feature-row text-center ">
+          <div
+            class="col-12 col-lg-3 pt-2 small font-weight-bold text-lg-right "
+            data-original-title="null"
+          >
+            Shortened URLs
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <span>Unlimited</span>
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <span>Unlimited</span>
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <span>300,000</span>
+          </div>
+        </div>
+        <div class="row feature-row text-center ">
+          <div
+            class="col-12 col-lg-3 pt-2 small font-weight-bold text-lg-right "
+            data-original-title="null"
+          >
+            Clicks on your URLs
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <span>Unlimited</span>
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <span>Unlimited</span>
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <span>100,000</span>
+          </div>
+          <!---->
+        </div>
+        <div class="row feature-row text-center ">
+          <div
+            class="col-12 col-lg-3 pt-2 small font-weight-bold text-lg-right "
+            data-original-title="null"
+          >
+            Active Shortify URLs
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <i aria-hidden="true" class="fa fa-minus text-body"></i>
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <span>500</span>
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <span>100,000</span>
+          </div>
+          <!---->
+        </div>
+        <div class="row feature-row text-center ">
+          <div
+            class="col-12 col-lg-3 pt-2 small font-weight-bold text-lg-right "
+            data-original-title="null"
+          >
+            API limit
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <i aria-hidden="true" class="fa fa-minus text-body"></i>
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <span>10,000</span>
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <span>100,000</span>
+          </div>
+          <!---->
+        </div>
+        <div class="row feature-row text-center ">
+          <div
+            class="col-12 col-lg-3 pt-2 small font-weight-bold text-lg-right "
+            data-original-title="null"
+          >
+            Default expiration
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <span class="text-capitalize">never</span>
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <span class="text-capitalize">never</span>
+          </div>
+          <div class="col col-lg-3 border-bottom py-2 small">
+            <span class="text-capitalize">in 90 days</span>
+          </div>
+          <!---->
+        </div>
+      </div>
+    </div>
+    <div
+      class="container-fluid bg-t-teal mt-2 pt-1"
+      style="background-color: cadetblue; border-radius: 10px;"
+    >
+      <div class="d-flex flex-wrap justify-content-end">
+        <div class="flex-grow-1 text-white my-2">
+          <h4>Subscribe now !</h4>
+          <div>Contact our sales team about <i>prime</i> options!</div>
+        </div>
+        <div class="mt-3">
+          <a class="btn btn-block btn-light">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </mat-drawer>
+</mat-drawer-container>

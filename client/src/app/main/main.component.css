@@ -1,0 +1,57 @@
+.title {
+  font-size: 48px;
+  font-family: Bungee, Impact, sans-serif;
+  font-weight: bolder;
+  color: #fff;
+  line-height: 120.5%;
+  text-shadow: 0 4px 15px rgb(0 0 0 / 20%);
+  letter-spacing: 0.06em;
+}
+.subtitle {
+  font-weight: bolder;
+  color: #fff;
+}
+.card {
+  border-radius: 10px;
+}
+
+.btn-success {
+  background-color: #42b72a;
+  border: none;
+}
+.btn-success:hover {
+  background-color: #2a9414;
+}
+.btn-primary {
+  background-color: #00205b;
+  border: none;
+}
+.btn-primary:hover {
+  background-color: #0641ad;
+}
+.slogan {
+  font-family: SFProDisplay-Regular, Helvetica, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: normal;
+  line-height: 32px;
+  width: 500px;
+}
+.loginform {
+  width: 500px;
+}
+.loginFail {
+  margin-bottom: 10px;
+  color: #dc3545;
+  font-weight: 500;
+}
+
+@media (max-width: 1200px) {
+  .word {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  .loginform {
+    width: 100%;
+  }
+}

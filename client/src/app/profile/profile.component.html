@@ -1,0 +1,213 @@
+<app-header></app-header>
+<div class="container">
+  <div class="card" style="border-radius:25px">
+    <h3 class="pt-4 pl-5" style="color: rgb(7, 3, 3); font-weight: bold;">
+      Welcome {{ Username }}
+    </h3>
+    <form
+      class="mt-5 ml-5 mr-5"
+      [formGroup]="profileForm"
+      (ngSubmit)="onUpdateSubmit()"
+    >
+      <div class="form-group row">
+        <label class="col-md-4 col-xl-3 col-form-label text-md-right"
+          >User ID</label
+        >
+        <div class="col-md-8 col-lg-6">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="userid"
+            [ngClass]="{
+              'form-control': true,
+              'is-invalid':
+                isUpdateSubmitted &&
+                profileForm.controls['userid'].hasError('required')
+            }"
+            #userid
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-4 col-xl-3 col-form-label text-md-right"
+          >Name</label
+        >
+        <div class="col-md-8 col-lg-6">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="name"
+            [ngClass]="{
+              'form-control': true,
+              'is-invalid':
+                isUpdateSubmitted &&
+                profileForm.controls['name'].hasError('required')
+            }"
+            #name
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-4  col-xl-3 col-form-label text-md-right"
+          >New Password</label
+        >
+        <div class="col-md-8 col-lg-6">
+          <input
+            type="password"
+            formControlName="pwd"
+            class="form-control"
+            [ngClass]="{
+              'form-control': true,
+              'is-invalid':
+                isUpdateSubmitted &&
+                profileForm.controls['pwd'].hasError('required')
+            }"
+            #pwd
+          />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-4  col-xl-3 col-form-label text-md-right"
+          >Confirm Password</label
+        >
+        <div class="col-md-8 col-lg-6">
+          <input
+            type="password"
+            formControlName="repeatpwd"
+            class="form-control"
+            [ngClass]="{
+              'form-control': true,
+              'is-invalid':
+                isUpdateSubmitted &&
+                profileForm.controls['repeatpwd'].hasError('required')
+            }"
+            #repeatpwd
+          />
+        </div>
+      </div>
+
+      <div class="form-group ">
+        <div class="text-center">
+          <button
+            class="btn btn-success btn-block"
+            type="submit"
+            style="width:50%"
+          >
+            <i></i>
+            <span>Confirm Change</span>
+          </button>
+          &nbsp;
+        </div>
+      </div>
+    </form>
+    <hr />
+
+    <h3 class="pt-4 pl-5" style="color: rgb(7, 3, 3); font-weight: bold;">
+      View your plan
+    </h3>
+    <div class="pr-5 pl-5">
+      <div class="form-row pb-1">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-0 mb-md-3">
+          <div class="card d-flex flex-column h-100 mb-0 overflow-hidden">
+            <div
+              class="card-header text-center font-weight-bold text-capitalize d-none d-md-block position-relative"
+            >
+              Free
+            </div>
+            <div class="card-body p-2 p-md-3 flex-grow-1 small">
+              <div class="d-none d-md-block">
+                Free basic ad-supported shortening for individual users. Keep
+                track of your link history.
+              </div>
+            </div>
+            <div class="px-2 pb-2 d-none d-md-block">
+              <div class="px-3 pb-2 text-center">
+                <div>
+                  <span class="font-weight-bold text-dark">$0.00</span>
+                  <span class="small font-weight-bold text-dark">/mo</span>
+                </div>
+                <small>Signup for free</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-0 mb-md-3">
+          <div
+            class="card d-flex flex-column h-100 mb-0 overflow-hidden border-t-green"
+          >
+            <div
+              class="card-header text-center font-weight-bold text-capitalize d-none d-md-block position-relative"
+            >
+              Pro
+              <div
+                class="position-absolute bg-t-green"
+                style="top: -24px; right: -50px; background-color: cadetblue; color: white; padding: 40px 40px 6px; overflow: hidden; transform: rotate(40deg); font-size: 10px; font-weight: 800;"
+              >
+                Current
+              </div>
+            </div>
+            <div class="card-body p-2 p-md-3 flex-grow-1 small">
+              <div class="d-none d-md-block">
+                Go Pro to take your branded links to the next level, with
+                unlimited tracked clicks, link tagging, and more.
+              </div>
+            </div>
+            <div class="px-2 pb-2 d-none d-md-block">
+              <div class="px-3 pb-2 text-center">
+                <div>
+                  <span class="font-weight-bold text-dark"
+                    >Starting at $9.99</span
+                  >
+                  <span class="small font-weight-bold text-dark">/mo</span>
+                </div>
+                <small>( $119.88 billed Annually )</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-0 mb-md-3">
+          <div class="card d-flex flex-column h-100 mb-0 overflow-hidden">
+            <div
+              class="card-header text-center font-weight-bold text-capitalize d-none d-md-block position-relative"
+            >
+              Bulk 100K
+            </div>
+            <div class="card-body p-2 p-md-3 flex-grow-1 small">
+              <div class="d-none d-md-block">
+                For those that need a massive amount of shortened URLs for your
+                SMS or other campaigns.
+              </div>
+            </div>
+            <div class="px-2 pb-2 d-none d-md-block">
+              <div class="px-3 pb-2 text-center">
+                <div>
+                  <span class="font-weight-bold text-dark"
+                    >Starting at $99.00</span
+                  >
+                  <span class="small font-weight-bold text-dark">/mo</span>
+                </div>
+                <small>( $1,188.00 billed Annually )</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="container-fluid bg-t-teal mt-2 pt-1"
+        style="background-color: cadetblue; border-radius: 10px;"
+      >
+        <div class="d-flex flex-wrap justify-content-end">
+          <div class="flex-grow-1 text-white my-2">
+            <h4>Any Question?</h4>
+            <div>Contact our sales team about <i>prime</i> options!</div>
+          </div>
+          <div class="mt-3">
+            <a class="btn btn-block btn-light">Contact Sales</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+  </div>
+</div>

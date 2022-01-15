@@ -1,0 +1,239 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="editForm" (ngSubmit)="onEditSubmit()">
+      <div class="form-floating mb-3">
+        <input
+          class="form-control"
+          formControlName="userid"
+          placeholder="userid"
+          [ngClass]="{
+            'form-control': true,
+            'is-invalid':
+              isEditSubmitted &&
+              editForm.controls['userid'].hasError('required')
+          }"
+          required
+          #userid
+        />
+        <label for="userid">User ID</label>
+        <div
+          id="email-error-msg"
+          class="invalid-feedback mt-2"
+          *ngIf="
+            isEditSubmitted && editForm.controls['userid'].hasError('required')
+          "
+        >
+          Please enter user ID.
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          class="form-control"
+          formControlName="name"
+          placeholder="name"
+          [ngClass]="{
+            'form-control': true,
+            'is-invalid':
+              isEditSubmitted && editForm.controls['name'].hasError('required')
+          }"
+          required
+          #name
+        />
+        <label for="name">Name</label>
+        <div
+          id="email-error-msg"
+          class="invalid-feedback mt-2"
+          *ngIf="
+            isEditSubmitted && editForm.controls['name'].hasError('required')
+          "
+        >
+          Please enter user's name.
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input
+          type="password"
+          class="form-control"
+          formControlName="password"
+          placeholder="Password"
+          [ngClass]="{
+            'form-control': true,
+            'is-invalid':
+              isEditSubmitted &&
+              editForm.controls['password'].hasError('required')
+          }"
+          required
+          #password
+        />
+        <label for="password">Password</label>
+        <div
+          id="email-error-msg"
+          class="invalid-feedback mt-2"
+          *ngIf="
+            isEditSubmitted &&
+            editForm.controls['password'].hasError('required')
+          "
+        >
+          Please enter password.
+        </div>
+      </div>
+      <label for="role">Role</label><br />
+
+      <div class="form-group  form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          formControlName="FreeUser"
+          id="FreeUser"
+        />
+        <label class="form-check-label" for="FreeUser">FreeUser</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          formControlName="ProUser"
+          id="ProUser"
+        />
+        <label class="form-check-label" for="ProUser">Pro User</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          formControlName="BulkAccess"
+          id="BulkAccess"
+        />
+        <label class="form-check-label" for="BulkAccess">Bulk Access</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          formControlName="Manager"
+          id="Manager"
+        />
+        <label class="form-check-label" for="Manager">Manager</label>
+      </div>
+      <div class="d-grid pt-4">
+        <button class="btn btn-lg btn-primary fw-bold" id="update">
+          Update
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<app-header></app-header>
+<div class="container">
+  <div class="card">
+    <h3 class="pt-4 pl-5" style="color: gray; font-weight: bold;">
+      User Management
+    </h3>
+    <form class="mt-5 ml-5 mr-5" name="queryForm">
+      <div class="form-group row">
+        <label
+          for="QueryRoleId"
+          class="col-sm-3 col-form-label form_label form_label_search form_label_gray text-right"
+          >Role</label
+        >
+        <div class="col-sm-6 form_input form_input_search">
+          <select id="QueryRoleId" name="QueryRoleId" class="form-control">
+            <option value="" selected>all</option>
+            <option value="">Prime User</option>
+            <option value="">Free User</option>
+            <option value="">Manager</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label
+          for="QueryName"
+          class="col-sm-3 col-form-label form_label form_label_search form_label_gray text-right"
+          >Name</label
+        >
+        <div class="col-sm-6 form_input form_input_search">
+          <input
+            type="text"
+            id="QueryName"
+            name="QueryName"
+            class="form-control"
+            placeholder=""
+            autocomplete="off"
+          />
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-12 text-center">
+          <button class="btn btn-success btn_custom btn_blue" type="button">
+            <i class="fas fa-fw fa-search"></i>
+            <span>Search</span>
+          </button>
+          &nbsp;
+          <button class="btn btn-warning btn_custom btn_gray" type="button">
+            <i class="fas fa-fw fa-redo-alt"></i>
+            <span>Reset</span>
+          </button>
+        </div>
+      </div>
+    </form>
+    <hr />
+    <div class="m-5 mt-0">
+      <table
+        datatable
+        [dtOptions]="dtOptions"
+        [dtTrigger]="dtTrigger"
+        class="row-border hover"
+        style="width:100%"
+      >
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>User Name</th>
+            <th>Registration Date</th>
+            <th>Role</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="persons?.length != 0">
+          <tr *ngFor="let person of persons">
+            <td>{{ person.userId }}</td>
+            <td>{{ person.name }}</td>
+            <td>{{ person.timeStamp | date: "yyyy-MM-dd hh:mm:ss" }}</td>
+            <td>{{ person.role }}</td>
+            <td>
+              <button
+                class="btn btn-primary"
+                (click)="open(content, person.userId)"
+              >
+                <i class="fa fa-pen"></i> Edit
+              </button>
+              &nbsp;
+              <button class="btn btn-danger" (click)="delete(person.userId)">
+                <i class="fa fa-trash"></i> delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="persons?.length == 0">
+          <tr>
+            <td colspan="3" class="no-data-available">No data!</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br />
+</div>

@@ -1,0 +1,12 @@
+.nav-link {
+  display: block;
+  padding: 0.9rem 1rem;
+}
+
+.text-dark {
+  color: #343a40 !important;
+}
+
+content {
+  width: 100% !important;
+}
